@@ -16,7 +16,7 @@ module tb_LFSR_10bit;
 
     initial begin
         clk = 0;
-        forever #5 clk = ~clk; 
+        forever #5 clk = ~clk;
     end
 
     initial begin
@@ -24,35 +24,16 @@ module tb_LFSR_10bit;
         $dumpfile("lfsr_tb.vcd");
         $dumpvars(0, tb_LFSR_10bit);
 
-        rst = 1;        
-        #10;            
-        rst = 0;        
-        #100;           
-        
-        
-        rst = 1;
-        #15;            
-        rst = 0;
-        #25;            
-        rst = 1;
-        #10;
-        rst = 0;
-        #100;           
-        
-        #3 rst = 1;     
-        #8 rst = 0;     
-        #100;           
-        
-        rst = 1;
-        #10;
-        rst = 0;
-        #50;
+        rst = 1;        // Apply reset
+        #10;            // Hold reset for 10ns
+        rst = 0;        // Release reset
+
+        repeat(20) begin
+            @(posedge clk); 
+            $display("Time: %0t ns, LFSR Output: %b", $time, lfsr_out);
+        end
         
         $stop;
-    end
-
-    initial begin
-        $monitor("Time: %0t ns, lfsr_out = %b", $time, lfsr_out);
     end
 
 endmodule
